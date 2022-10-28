@@ -8,13 +8,14 @@ function buildMetadata(sample){
         let sampleMeta = d3.select('#sample-metadata');
     ​
         // Use `.html("") to clear any existing metadata
-        sampleMeta.html('')
+        sampleMeta.html('');
     ​=
         // Hint: Inside the loop, you will need to use d3 to append new
         // tags for each key-value in the metadata.
     ​    Object.entries(metaObject).forEach(([key, value]) => {
             sampleMeta.append("h5").text(`${key}: ${value}`);
-    ​
+
+        });
         // BONUS: Build the Gauge Chart ... give this a try if you have time.  Otherwise don't add anything.
         
       });
@@ -22,8 +23,13 @@ function buildMetadata(sample){
       function buildCharts(sample) {
         d3.json("https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json").then((data) => {
         //   put the data into a variable
+        let sample = data.sample;
+
         //   filter the data using 'sample'
+        let sampFilter = sample.filter(sampleObject => sampleObject.id == sample);
+
         //   grab the first entry [0]
+        let firstEntry = sampFilter[0];
       
           let otu_ids = result.otu_ids;
           let otu_labels = result.otu_labels;
@@ -31,14 +37,40 @@ function buildMetadata(sample){
       
           // Build a Bubble Chart
         //   https://plotly.com/javascript/bubble-charts/
+
+        // create a trace for chart 
+        var bubble = {
+            x: otu_ids,
+            y: sample_values,
+            text: otu_labels,
+            mode: 'markers',
+            markers: {
+                color: otu_ods,
+                size: sample_values,
+                coloscale: 'Jet'
+            }
+        }
+
+        let bubbleLayout = [bubble]
+
+        // Create a layout 
+        var bubblelayout = {
+            xaxis: { title: 'OTU ID'},
+            margin: { t: 50 },
+        }
       
           Plotly.newPlot("bubble", bubbleData, bubbleLayout);
       
-            // slice the data down to 10 items  
-            //you will probably want to reverse them to get them into desc order
-          let yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
+        // slice the data down to 10 items  
+        //you will probably want to reverse them to get them into desc order
+        let yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
+
           //create trace
-     
+          var bar1 = [{
+                type: 'bar',
+                
+          }];
+        
             // create layout  (title is enough)
     ​
             // draw your plot Plotly.newPlot()
