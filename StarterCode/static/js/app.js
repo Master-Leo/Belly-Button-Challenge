@@ -29,7 +29,7 @@ function buildMetadata(sample){
         let sampFilter = sample.filter(sampleObject => sampleObject.id == sample);
 
         //   grab the first entry [0]
-        let firstEntry = sampFilter[0];
+        let result = sampFilter[0];
       
           let otu_ids = result.otu_ids;
           let otu_labels = result.otu_labels;
@@ -45,7 +45,7 @@ function buildMetadata(sample){
             text: otu_labels,
             mode: 'markers',
             markers: {
-                color: otu_ods,
+                color: otu_ids,
                 size: sample_values,
                 coloscale: 'Jet'
             }
@@ -67,8 +67,11 @@ function buildMetadata(sample){
 
           //create trace
           var bar1 = [{
+                x: sample_values.slice(0,10).reverse(),
+                y: yticks,
+                text: otu_labels.slice(0,10).reverse(),
                 type: 'bar',
-                
+                orientation: 'h',
           }];
         
             // create layout  (title is enough)
